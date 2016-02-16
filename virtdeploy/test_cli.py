@@ -103,7 +103,7 @@ optional arguments:
         cli.parse_command_line(['create', 'test01', 'base01'])
 
         driver_mock.assert_called_with('libvirt')
-        instance_create.assert_called_with('test01', 'base01')
+        instance_create.assert_called_with('test01', 'base01', options=None)
 
     @patch('sys.stderr')
     @patch('virtdeploy.get_driver')

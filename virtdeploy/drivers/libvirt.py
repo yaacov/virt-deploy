@@ -78,6 +78,9 @@ class VirtDeployLibvirtDriver(VirtDeployDriverBase):
         libvirt.registerErrorHandler(libvirt_callback, ctx=None)
         return libvirt.open(self._uri)
 
+    def _options_to_dict(self, options):
+        return dict([v.split('=') for v in options or []])
+
     def template_list(self):
         templates = _get_virt_templates()
 
@@ -89,6 +92,8 @@ class VirtDeployLibvirtDriver(VirtDeployDriverBase):
 
     def instance_create(self, vmid, template, **kwargs):
         kwargs = dict(INSTANCE_DEFAULTS.items() + kwargs.items())
+        options = kwargs['options']
+        kwargs.update(self._options_to_dict(options))
 
         name = '{0}-{1}-{2}'.format(vmid, template, kwargs['arch'])
         image = '{0}.qcow2'.format(name)

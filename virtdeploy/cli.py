@@ -40,7 +40,7 @@ EXITCODE_KEYBINT = 130
 
 def instance_create(args):
     driver = virtdeploy.get_driver(DRIVER)
-    instance = driver.instance_create(args.id, args.template)
+    instance = driver.instance_create(args.id, args.template, options=args.o)
 
     print('name: {0}'.format(instance['name']))
     print('root password: {0}'.format(instance['password']))
@@ -124,6 +124,8 @@ def parse_command_line(cmdline):
     cmd_create = cmd.add_parser('create', help='create a new instance')
     cmd_create.add_argument('id', help='new instance id')
     cmd_create.add_argument('template', help='template id')
+    cmd_create.add_argument('-o', nargs='+', required=False, metavar='OPTIONS',
+                            help='backend instance options')
 
     cmd_start = cmd.add_parser('start', help='start an instance')
     cmd_start.add_argument('--wait', action='store_true',
